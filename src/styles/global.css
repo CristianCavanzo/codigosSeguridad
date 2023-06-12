@@ -1,0 +1,15 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+.containerContent {
+	display: grid;
+	place-content: center;
+	row-gap: 4px;
+	padding: 5vh 0;
+	text-align: center;
+}
+hr {
+	border: 1px solid;
+}
