@@ -1,33 +1,43 @@
-import { stat } from 'fs';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
+import { UseReducer, initialState } from 'src/hook/useReducer';
 const SECURITY_CODE = 'paradigma';
 const UseState = ({ name }) => {
-	const [state, setState] = useState({
-		error: false,
-		loading: false,
-		value: '',
-		deleted: false,
-		confirmed: false,
-	});
+	const [state, dispatch] = useReducer(UseReducer, initialState);
 
 	const handleConfirm = () => {
-		setState({
-			...state,
-			loading: !state.loading,
-			error: false,
-			confirmed: true,
-			value: '',
+		dispatch({
+			type: 'CONFIRM',
 		});
 	};
 	const handleError = () => {
-		setState({
-			...state,
-			error: true,
-			confirmed: false,
-			loading: !state.loading,
+		dispatch({
+			type: 'ERROR',
 		});
 	};
 
+	const handleValidate = () => {
+		dispatch({
+			type: 'VALIDATE',
+		});
+	};
+
+	const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+		dispatch({
+			type: 'WRITE',
+			payload: event.target.value,
+		});
+	};
+
+	const handleDelete = () => {
+		dispatch({
+			type: 'DELETE',
+		});
+	};
+	const handleDontDelete = () => {
+		dispatch({
+			type: 'RESET',
+		});
+	};
 	useEffect(() => {
 		if (state.loading) {
 			setTimeout(() => {
@@ -38,35 +48,6 @@ const UseState = ({ name }) => {
 			}, 500);
 		}
 	}, [state]);
-
-	const handleValidate = () => {
-		setState({
-			...state,
-			loading: !state.loading,
-		});
-	};
-
-	const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setState({
-			...state,
-			error: false,
-			value: event.target.value,
-		});
-	};
-
-	const handleDelete = () => {
-		setState({
-			...state,
-			deleted: true,
-		});
-	};
-	const handleDontDelete = () => {
-		setState({
-			...state,
-			confirmed: false,
-			deleted: false,
-		});
-	};
 
 	if (!state.deleted && !state.confirmed) {
 		return (
