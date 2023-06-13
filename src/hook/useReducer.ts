@@ -22,7 +22,7 @@ interface Reducer {
 	};
 }
 
-const reducerObject = (state: Reducer['state'], action: Reducer['action']) => ({
+const reducerObject = (state: Reducer['state'], payload: Reducer['action']['payload']) => ({
 	ERROR: {
 		...state,
 		error: true,
@@ -43,7 +43,7 @@ const reducerObject = (state: Reducer['state'], action: Reducer['action']) => ({
 	WRITE: {
 		...state,
 		error: false,
-		value: action.payload,
+		value: payload,
 	},
 	DELETE: {
 		...state,
@@ -61,5 +61,5 @@ const reducerObject = (state: Reducer['state'], action: Reducer['action']) => ({
 });
 
 const UseReducer = (state: Reducer['state'], action: Reducer['action']) =>
-	reducerObject(state, action)[action.type] || state;
+	reducerObject(state, action.payload)[action.type] || state;
 export { initialState, UseReducer };
